@@ -6,6 +6,11 @@
 		<h1 class="monospace">
 			{{ venue.name }}
 		</h1>
+		<button id="edit-button" data-id={{venue.id}} class="btn btn-primary btn-sm" style="width: 200px;">Edit venue
+		</button>
+		<button id="delete-button" data-id={{venue.id}} class="btn btn-primary btn-sm" style="width: 200px;">Delete
+			venue
+		</button>
 		<p class="subtitle">
 			ID: {{ venue.id }}
 		</p>
@@ -24,10 +29,12 @@
 			<i class="fas fa-phone-alt"></i> {% if venue.phone %}{{ venue.phone }}{% else %}No Phone{% endif %}
 		</p>
 		<p>
-			<i class="fas fa-link"></i> {% if venue.website %}<a href="{{ venue.website }}" target="_blank">{{ venue.website }}</a>{% else %}No Website{% endif %}
+			<i class="fas fa-link"></i> {% if venue.website %}<a href="{{ venue.website }}"
+				target="_blank">{{ venue.website }}</a>{% else %}No Website{% endif %}
 		</p>
 		<p>
-			<i class="fab fa-facebook-f"></i> {% if venue.facebook_link %}<a href="{{ venue.facebook_link }}" target="_blank">{{ venue.facebook_link }}</a>{% else %}No Facebook Link{% endif %}
+			<i class="fab fa-facebook-f"></i> {% if venue.facebook_link %}<a href="{{ venue.facebook_link }}"
+				target="_blank">{{ venue.facebook_link }}</a>{% else %}No Facebook Link{% endif %}
 		</p>
 		{% if venue.seeking_talent %}
 		<div class="seeking">
@@ -36,7 +43,7 @@
 				<i class="fas fa-quote-left"></i> {{ venue.seeking_description }} <i class="fas fa-quote-right"></i>
 			</div>
 		</div>
-		{% else %}	
+		{% else %}
 		<p class="not-seeking">
 			<i class="fas fa-moon"></i> Not currently seeking talent
 		</p>
@@ -47,7 +54,8 @@
 	</div>
 </div>
 <section>
-	<h2 class="monospace">{{ venue.upcoming_shows_count }} Upcoming {% if venue.upcoming_shows_count == 1 %}Show{% else %}Shows{% endif %}</h2>
+	<h2 class="monospace">{{ venue.upcoming_shows_count }} Upcoming
+		{% if venue.upcoming_shows_count == 1 %}Show{% else %}Shows{% endif %}</h2>
 	<div class="row">
 		{%for show in venue.upcoming_shows %}
 		<div class="col-sm-4">
@@ -61,7 +69,8 @@
 	</div>
 </section>
 <section>
-	<h2 class="monospace">{{ venue.past_shows_count }} Past {% if venue.past_shows_count == 1 %}Show{% else %}Shows{% endif %}</h2>
+	<h2 class="monospace">{{ venue.past_shows_count }} Past
+		{% if venue.past_shows_count == 1 %}Show{% else %}Shows{% endif %}</h2>
 	<div class="row">
 		{%for show in venue.past_shows %}
 		<div class="col-sm-4">
@@ -74,6 +83,33 @@
 		{% endfor %}
 	</div>
 </section>
+<script>
+	const editButton = document.getElementById('edit-button');
+	editButton.onclick = function (e) {
+		const venueId = e.target.dataset['id'];
+		fetch(`/venues/${venueId}/edit`, {
+			method: 'GET'
+		}).then(function () {
+			window.location.href = `/venues/${venueId}/edit`;
+		}).catch(function (err) {
+			console.log(err);
+
+		})
+	}
+	const deleteButton = document.getElementById('delete-button');
+	deleteButton.onclick = function (e) {
+		const venueId = e.target.dataset['id'];
+		console.log(venueId)
+		fetch('/venues/' + venueId, {
+			method: 'DELETE'
+		}).then(function () {
+			window.location.href = `/venues`;
+		}).catch(function (err) {
+			console.log(err);
+
+		})
+	}
+
+</script>
 
 {% endblock %}
-
