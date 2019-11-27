@@ -406,14 +406,14 @@ def create_artist_submission():
 
 @app.route('/shows')
 def shows():
-  show = Show.query.all()
-  data = [dict(venue_id = x.venue_id,
-  venue_name= Venue.query.get(x.venue_id).name,
-  artist_name= Artist.query.get(x.artist_id).name,
-  artist_image_link= Artist.query.get(x.artist_id).image_link,
-  artist_id = x.artist_id,
-  start_time =format_datetime(str(x.start_time))
-   ) for x in show]
+  get_shows = Show.query.all()
+  data = [dict(venue_id = show.venue_id,
+  venue_name= Venue.query.get(show.venue_id).name,
+  artist_name= Artist.query.get(show.artist_id).name,
+  artist_image_link= Artist.query.get(show.artist_id).image_link,
+  artist_id = show.artist_id,
+  start_time =format_datetime(str(show.start_time))
+   ) for show in get_shows]
   return render_template('pages/shows.html', shows=data)
 
 @app.route('/shows/create')
